@@ -12,7 +12,7 @@ public class DefaultValues {
 	
 	public static final String DEFAULT_CSV_SEPARATOR = ";";
 
-	public static final int DEFAULT_THREAD_WAIT_TIME = 15;
+	public static final int DEFAULT_THREAD_WAIT_TIME = 15000;
 	
 	public int getDefaultCount() {
 		return DEFAULT_COUNT;

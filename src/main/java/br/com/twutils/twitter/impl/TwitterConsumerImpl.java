@@ -108,6 +108,7 @@ public class TwitterConsumerImpl implements TwitterConsumer {
 		}
 
 		query.setCount(DefaultValues.DEFAULT_COUNT);
+		System.out.println("------------ Colled geo -----------");
 		return searchTweetsFromStream(query, 1L, tweetsListVO);
 	}
 	
@@ -117,7 +118,7 @@ public class TwitterConsumerImpl implements TwitterConsumer {
 		List<TweetVO> listWithTweets = tweetsListVO;
 		query.setCount(DefaultValues.DEFAULT_COUNT);
 		query.setSinceId(sinceId);
-
+		System.out.println("------------ Called search tweets -----------------");
 		try {
 			result = twitter.search(query);
 			sinceId = result.getMaxId();
@@ -128,6 +129,7 @@ public class TwitterConsumerImpl implements TwitterConsumer {
 				Double lon = status.getGeoLocation() == null ? 0.0 : status.getGeoLocation().getLongitude();
 				twitterVO.setTweetId(status.getId());
 				twitterVO.setTweetText(status.getText());
+				twitterVO.setTweetText(status.getLang());
 				twitterVO.setUserScreenName(status.getUser().getName());
 				twitterVO.setRetweetCount(status.getRetweetCount());
 				twitterVO.setFavouriteCount(status.getFavoriteCount());
@@ -139,6 +141,7 @@ public class TwitterConsumerImpl implements TwitterConsumer {
 				JSONObject tweet = new JSONObject();
 				tweet.put("id", status.getId());
 				tweet.put("text", status.getText());
+				tweet.put("lang", status.getLang());
 				tweet.put("username", status.getUser().getScreenName());
 				tweet.put("latitude", lat);
 				tweet.put("longitude", lon);
@@ -150,6 +153,7 @@ public class TwitterConsumerImpl implements TwitterConsumer {
 				listWithTweets.add(twitterVO);
 			}
 			Thread.sleep(DefaultValues.DEFAULT_THREAD_WAIT_TIME);
+			System.out.println("------------ Called search tweets -----------------" + DefaultValues.DEFAULT_THREAD_WAIT_TIME);
 			searchTweetsFromStream(query, sinceId, tweetsListVO);
 		} catch (TwitterException e1) {
 			logger.info("Could not get tweets from stream.");
@@ -174,6 +178,7 @@ public class TwitterConsumerImpl implements TwitterConsumer {
 				rawQuery.append(" OR ");
 			}
 		}
+		System.out.println("------------ " + rawQuery.toString() + " -----------");
 		Query query = new Query(rawQuery.toString());
 		return searchTweetsFromStream(query, 1L, tweetsListVO);
 	}
